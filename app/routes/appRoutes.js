@@ -1,7 +1,12 @@
 module.exports = (app, db) => {
-  // CRUD
+  // CRUD OPERATIONS
   app.get('/api/all', (req, res) => {
     db.Item.findAll({}).then((result) => {
+      res.json(result)
+    })
+  })
+  app.get('/api/:id', (req, res) => {
+    db.Item.findByPk(req.params.id).then((result) => {
       res.json(result)
     })
   })
