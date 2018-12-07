@@ -2,6 +2,8 @@ let express = require('express')
 let app = express()
 let bodyParser = require('body-parser')
 let PORT = process.env.PORT || 3000
+let db = require('./models')
+let apiRoutes = require('./app/routes/appRoutes.js')
 
 // Set up the express app to handle data parsing
 app.use(bodyParser.json())
@@ -12,6 +14,10 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }))
 // Static directory
 app.use(express.static("app/public"))
 
-app.listen(PORT, function () {
-  console.log(`Listening on port ${PORT}`)
+apiRoutes(app, db)
+
+db.sequelize.sync().then(function () {
+  app.listen(PORT, function () {
+    console.log(`Listening on port ${PORT}`)
+  })
 })
